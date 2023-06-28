@@ -11,7 +11,7 @@ function App() {
         <div className="container">
           <Intro />
           <hr />
-          <Setup />
+          <Setup /
           <hr />
           <Demo />
           <hr />
