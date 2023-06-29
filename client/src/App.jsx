@@ -1,12 +1,17 @@
 import { EthProvider } from "./contexts/EthContext";
-import RegisterUser from "./components/RegisterUser";
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import RegisterUser from "./components/RegisterUser.jsx";
+import TodoList from "./components/TodoList.jsx";
 
 function App() {
   return (
     <EthProvider>
-      <div id="App">
-        <RegisterUser/>
-      </div>
+    <Router>
+    <Routes>
+      <Route path="/" element={<RegisterUser/>}/>
+      <Route path="/home" element={<TodoList/>}/>
+    </Routes>
+    </Router>
     </EthProvider>
   );
 }

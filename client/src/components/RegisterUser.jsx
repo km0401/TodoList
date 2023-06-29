@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useEth from '../contexts/EthContext/useEth';
 import CustomButton from './CustomButton';
+import { useNavigate } from 'react-router-dom'
 import { Box, Card, Typography, TextField } from '@mui/material';
 
 function RegisterUser() {
@@ -9,6 +10,22 @@ function RegisterUser() {
   } = useEth();
 
   const [username, setUsername] = useState('');
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const checkRegistrationStatus = async () => {
+      try {
+        const isRegistered = await contract.methods.isRegistered().call({ from: accounts[0] });
+        if (isRegistered) {
+          navigate('/home');
+        }
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    checkRegistrationStatus();
+  }, [contract, accounts, navigate]);
 
   const handleUserRegistration = async () => {
     try {
@@ -16,12 +33,11 @@ function RegisterUser() {
         throw new Error('Please fill the name field');
       }
       const isRegistered = await contract.methods.isRegistered().call({from:accounts[0]});
-      if (isRegistered) {
-        
-      }
-      await contract.methods.registerUser(username).send({ from: accounts[0] });
+      if (!isRegistered) {
+        await contract.methods.registerUser(username).send({ from: accounts[0] });
       setUsername('');
       alert('User registered successfully!');
+      }
     } catch (error) {
       alert(error.message);
     }

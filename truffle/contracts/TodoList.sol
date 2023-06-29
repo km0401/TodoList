@@ -55,6 +55,10 @@ contract TodoList{
         return (task.taskId,task.description, task.completed);
     }
 
+    function getTaskCount() public view onlyRegisteredUser returns(uint){
+        return users[msg.sender].taskCount;
+    }
+
     function isRegistered() public view returns(bool){
         return users[msg.sender].registered;
     }
